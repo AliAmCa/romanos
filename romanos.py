@@ -31,9 +31,16 @@ valores_romanosT = [
     (4,'IV'),
     (1,'I')
 ]
+'''
+def valida_numero(n):
+    if not isinstance(n,int):
+        raise TypeError(f"{n} debe ser de tipo int")
+    if n<=0:
+        raise ValueError(f"{n} debe ser un entero positivo")
 
-
+'''
 def arabigo_a_romano(n):
+    #valida_numero(n)
     romano = ""
     resto = None
     while resto != 0:
@@ -50,12 +57,27 @@ def arabigo_a_romano(n):
 
     return romano
 
-def romano_a_arabigo(n):
+def romano_a_arabigo(r):
     total =0
-    for char in n:
-        total += valores_romanos.key(char)
-        print(total)
-        print(valores_romanos.key(char))
+    d = {}
+    for clave, valor in valores_romanos.items():
+        d[valor]= clave
+
+    valor_anterior=0
+    for char in r:
+        
+        valor_actual= d[char]
+        if valor_actual<= valor_anterior:
+            total+=valor_actual
+            valor_anterior = valor_actual
+
+        else:
+            total-= valor_anterior
+            total += valor_actual-valor_anterior
+            valor_anterior = valor_actual
+
+    return total
+        
 
 
 
