@@ -67,32 +67,40 @@ def romano_a_arabigo(r):
     for clave, valor in valores_romanos.items():
         d[valor]= clave
     contador=1
+    
     valor_anterior=0
     char_anterior= ""
     for char in r:
         
         valor_actual= d[char]
-
+        
         #comprobar repeticiones
         if char == char_anterior:
             contador +=1
+            
 
-            if char in 'VLD' and contador > 1:
+            if char in 'VLD' and contador > 1 :
                 raise RomanError(f"Demasiadas repeticiones de {char} ")
-            if contador > 3:
+            elif contador > 3:
                 raise RomanError(f"Demasiadas repeticiones de {char} ")
+           
 
-        else:   
+
+        else: 
+            if contador >1 and valor_actual>valor_anterior:
+                  raise RomanError(f"Las repeticiones de {char} no pueden restar")
             contador =1
 
         if valor_actual<= valor_anterior: #si el valor actual es menor que el anterior, lo sumamos al total
             total+=valor_actual
             valor_anterior = valor_actual
+            
 
         else: # si el valor actual es mayor, resto al valor anterior al total, y le sumo valoractual menos valor anterior
 
             if char_anterior == 'V' or char_anterior == 'L' or char_anterior == 'D' :
-                raise RomanError(f"{char_anterior} no pueden restar")
+                raise RomanError(f"{char_anterior} no puede restar")
+                
             total-= valor_anterior
             total += valor_actual-valor_anterior
             valor_anterior = valor_actual
