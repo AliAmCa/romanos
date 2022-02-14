@@ -1,3 +1,6 @@
+
+
+
 valores_romanos = {
     1 : 'I',
     4 : 'IV',
@@ -174,4 +177,7 @@ def roman_a_arab_mayor(r):
 
 
 
+if __name__ == '__main__':
 
+    print(roman_a_arab_mayor('(CCXXXIV)DLXVII'))
+    print(arab_a_roman_mayor(1234567123456123456))
