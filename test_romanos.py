@@ -1,6 +1,6 @@
 import unittest
 
-from romanos import arabigo_a_romano,  romano_a_arabigo, RomanError
+from romanos import arab_a_roman_mayor, arabigo_a_romano, roman_a_arab_mayor,  romano_a_arabigo, RomanError
 
 
 class RomanosFuncionesTest(unittest.TestCase):
@@ -18,6 +18,8 @@ class RomanosFuncionesTest(unittest.TestCase):
     def test_arabigo_a_romano_solo_enteros_positivos(self):
         with self.assertRaises(ValueError):
             arabigo_a_romano(-23)
+        with self.assertRaises(ValueError):
+            arabigo_a_romano(0)
             
 
     
@@ -55,20 +57,39 @@ class RomanosFuncionesDeRomanoTest(unittest.TestCase):
     def test_romano_a_arabigo_tras_repeticion_no_se_resta(self):
         with self.assertRaises(RomanError):
             romano_a_arabigo('XXL')
-        
+        with self.assertRaises(RomanError):
+            romano_a_arabigo('XXIIV')
 
-            
+        self.assertEqual(romano_a_arabigo('XXIII'), 23)
 
-'''
+    def test_romano_a_arabigo_restas_prohibidas(self):
+        with self.assertRaises(RomanError):
+            romano_a_arabigo('XIC')    
+        self.assertEqual(romano_a_arabigo('XIV'), 14)
 
+        with self.assertRaises(RomanError):
+            romano_a_arabigo('XD')
 
-from romanos import arabigo_a_romano,  romano_a_arabigo
+    def test_romano_a_arabigo_validaciones(self):
+        with self.assertRaises(RomanError):
+            romano_a_arabigo('SED')
+        with self.assertRaises(RomanError):
+            romano_a_arabigo('IK')
+        with self.assertRaises(RomanError):
+            romano_a_arabigo('KI')
 
-print(arabigo_a_romano(36)) #XXXVI
-print(arabigo_a_romano(46)) #XLVI
+    def test_romano_a_arabigo_minusculas(self):
+        self.assertEqual(romano_a_arabigo('xli'),41)
 
-print(romano_a_arabigo('XXXVI'))#36
-print(romano_a_arabigo('XLVI'))#46
-print(romano_a_arabigo('MMCDXLIII'))#2443
-print(romano_a_arabigo('MMMMM'))
-'''
+    def test_arabigo_a_romano_mayor_de_3999(self):
+        self.assertEqual(arab_a_roman_mayor(5430),'(V)CDXXX')
+        self.assertEqual(arab_a_roman_mayor(234567),'(CCXXXIV)DLXVII')
+        self.assertEqual(arab_a_roman_mayor(1234567),'((I)CCXXXIV)DLXVII')
+        self.assertEqual(arabigo_a_romano(1234567),'((I)CCXXXIV)DLXVII')
+        self.assertEqual(arabigo_a_romano(1234561232),'(((I)CCXXXIV)DLXI)CCXXXII')
+
+    
+    def test_romano_a_arabigo_mayor_de_3999(self):
+        self.assertEqual(roman_a_arab_mayor('(V)CDXXX'),5430)
+        self.assertEqual(roman_a_arab_mayor('(CCXXXIV)DLXVII'), 234567)
+        self.assertEqual(roman_a_arab_mayor('(((I)CCXXXIV)DLXI)CCXXXII'), 1234561232)

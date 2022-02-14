@@ -32,6 +32,7 @@ valores_romanosT = [
     (1,'I')
 ]
 
+
 class RomanError(Exception):
     pass
 
@@ -42,42 +43,76 @@ def valida_numero(n):
     if n<=0:
         raise ValueError(f"{n} debe ser un entero positivo")
 
+def arab_a_roman_mayor(n):
+    romano =[]
+    while not n<1000:
+        resto = n%1000
+        
+        romano.append(arabigo_a_romano(resto))
+        
+        n = n//1000
+    
+    romano.append(arabigo_a_romano(n))
+    numero =""
+    cont=len(romano)-1
+    numero =(len(romano)-1)*"("
+
+    for r in reversed(romano):
+        if cont==0:
+            numero +=r
+        else:
+            numero +=r +")"
+        cont-=1
+    
+    return numero
+    
+
+
+
 
 def arabigo_a_romano(n):
     valida_numero(n)
     romano = ""
-    resto = None
-    while resto != 0:
-        for valor,simbolo in valores_romanosT:
-            if n >= valor:
-                break
-        
-        cociente = n // valor
-        resto = n % valor
-
-        
-        romano += cociente * simbolo
-        n = resto
-
+    if n>3999:
+        romano = arab_a_roman_mayor(n)
+    else:
+        resto = None
+        while resto != 0:
+            for valor,simbolo in valores_romanosT:
+                if n >= valor:
+                    break
+            
+            cociente = n // valor
+            resto = n % valor
+            romano += cociente * simbolo
+            n = resto
     return romano
 
+def validaSimbolo(simbolo):
+                
+    if simbolo not in '()IVXLDCM':
+        raise RomanError(f"{simbolo} no es un numero romano")
+
 def romano_a_arabigo(r):
+    r = r.upper()
     total =0
     d = {}
     for clave, valor in valores_romanos.items():
         d[valor]= clave
+
     contador=1
     
     valor_anterior=0
     char_anterior= ""
     for char in r:
+        validaSimbolo(char)
         
         valor_actual= d[char]
         
         #comprobar repeticiones
         if char == char_anterior:
             contador +=1
-            
+                               
 
             if char in 'VLD' and contador > 1 :
                 raise RomanError(f"Demasiadas repeticiones de {char} ")
@@ -91,6 +126,8 @@ def romano_a_arabigo(r):
                   raise RomanError(f"Las repeticiones de {char} no pueden restar")
             contador =1
 
+        #Comprobar valores si suman o restan
+
         if valor_actual<= valor_anterior: #si el valor actual es menor que el anterior, lo sumamos al total
             total+=valor_actual
             valor_anterior = valor_actual
@@ -100,15 +137,40 @@ def romano_a_arabigo(r):
 
             if char_anterior == 'V' or char_anterior == 'L' or char_anterior == 'D' :
                 raise RomanError(f"{char_anterior} no puede restar")
-                
-            total-= valor_anterior
-            total += valor_actual-valor_anterior
+
+            # Restas prohibidas
+            if char_anterior =='I' and char not in 'VX' or char_anterior == 'X' and char not in 'LC' or char_anterior == 'C' and char not in 'DM' :
+                raise RomanError(f"{char_anterior} no puede restar a {char} ")   
+            
+
+            
+            total += valor_actual-2*valor_anterior
             valor_anterior = valor_actual
 
         char_anterior = char
 
     return total
         
+
+def roman_a_arab_mayor(r):
+   
+    listaNumeros=[]
+    cadena=""
+    for char in r:
+        
+        if char not in '()':
+            cadena+=char
+        
+        if char == ')':  
+            listaNumeros.append(str(romano_a_arabigo(cadena)))
+            cadena =""
+        
+    listaNumeros.append(str(romano_a_arabigo(cadena)))
+    cadenaTotal=""
+    for num in listaNumeros:
+        cadenaTotal+= num
+    
+    return int(cadenaTotal)
 
 
 
