@@ -30,3 +30,9 @@ class RomanNumberTest(unittest.TestCase):
         self.assertEqual(once * doce, RomanNumber(132))
         self.assertEqual(doce / RomanNumber(2), RomanNumber(6))
         self.assertEqual(doce + 12 , 24)
+
+        self.assertEqual(12 + once, 23)
+        self.assertEqual(11 - once, 0)
+        self.assertEqual(2 * doce, 24)
+        self.assertEqual(12/RomanNumber(2), 6)
+        

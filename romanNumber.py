@@ -68,30 +68,70 @@ class RomanNumber(object):
         if isinstance(RN, RomanNumber):
             return RomanNumber(self.arabigo + RN.arabigo)
         elif isinstance(RN, int ):
-            return RomanNumber(self.arabigo + RN)
+            return self.arabigo + RN
+        else:
+            raise TypeError("Tiene que ser un numero ")
+   
     def __radd__(self,other):
         if isinstance(other, RomanNumber):
             return RomanNumber(self.arabigo + other.arabigo)
         elif isinstance(other, int):
-            return RomanNumber(self.arabigo + other)
+            return self.arabigo + other
+        else:
+            raise TypeError("Tiene que ser un numero ")
        
 
     #Funcion resta
     def __sub__(self, RN):
-        if not isinstance(RN, RomanNumber):
-            raise TypeError("Tiene que ser un numero romano")
-        return RomanNumber(self.arabigo - RN.arabigo)
+        if isinstance(RN, RomanNumber):
+            return RomanNumber(self.arabigo - RN.arabigo)
+        elif isinstance(RN, int):
+            return self.arabigo - RN
+        else:
+            raise TypeError("Tiene que ser un numero")
+    
+    def __rsub__(self, RN):
+        if isinstance(RN, RomanNumber):
+            return RomanNumber(RN.arabigo - self.arabigo)
+        elif isinstance(RN, int):
+            return RN - self.arabigo 
+        else:
+            raise TypeError("Tiene que ser un numero")
+
 
     #Funcion multiplicacion
     def __mul__(self,RN):
-        if not isinstance(RN, RomanNumber):
-            raise TypeError("Tiene que ser un numero romano")
-        return RomanNumber(self.arabigo * RN.arabigo)
+        if isinstance(RN, RomanNumber):
+            return RomanNumber(RN.arabigo * self.arabigo)
+        elif isinstance(RN, int):
+            return RN * self.arabigo 
+        else:
+            raise TypeError("Tiene que ser un numero")
+
+    def __rmul__(self,other):
+        if isinstance(other, RomanNumber):
+            return RomanNumber(other * self.arabigo)
+        elif isinstance(other, int):
+            return other * self.arabigo
+        else:
+            raise TypeError("Tiene que ser un número")
 
     #Funcion division
     def __truediv__(self,RN):
-        if not isinstance(RN, RomanNumber):
-            raise TypeError("Tiene que ser un numero romano")
-        return RomanNumber(self.arabigo//RN.arabigo)
+        if isinstance(RN, RomanNumber):
+            return RomanNumber(self.arabigo//RN.arabigo)
+        elif isinstance(RN, int):
+            return self.arabigo//RN
+        else:
+            raise TypeError("Tiene que ser un numero ")
+
+    def __rtruediv__(self, other):
+        if isinstance(other, RomanNumber):
+            return RomanNumber(other.arabigo//self.arabigo)
+        elif isinstance(other, int):
+            return other//self.arabigo
+        else:
+            raise TypeError("Tiene que ser un numero")
+        
 
     
